@@ -52,6 +52,15 @@ Pentru a repara rapid această eroare:
    `bleMouseInstance->hid->manufacturer()->setValue((uint8_t*)bleMouseInstance->deviceManufacturer.c_str(), bleMouseInstance->deviceManufacturer.length());`
 5. Salvează fișierul (`Ctrl+S`), închide Notepad și recompilează codul în Arduino IDE. Eroarea va dispărea!
 
+## 🎨 Design & Ergonomie
+Modul în care asamblați mănușa (aspectul fizic, alegerea materialului și așezarea componentelor pe mână) rămâne strict la latitudinea fiecăruia! 
+
+Nu există o regulă fixă. Puteți coase componentele pe o mănușă textilă subțire, le puteți prinde cu benzi velcro (scai) pentru a le da jos ușor, sau chiar puteți printa 3D niște suporți. Singurele recomandări practice sunt:
+* **Fixați senzorul MPU-6050 ferm:** Acesta nu trebuie să se miște independent de mână, altfel cursorul va tremura.
+* **Poziția butoanelor:** Deoarece butoanele vor fi apăsate folosind **degetul mare**, fixați-le pe laterala sau pe buricul celorlalte degete (arătător, mijlociu, inelar ,degetul mic) exact în locurile în care degetul mare ajunge cel mai natural. Testați mișcarea înainte de a le lipi definitiv, pentru a vă asigura că nu forțați încheietura.
+
+Fiți creativi și adaptați proiectul exact pe dimensiunea și confortul vostru!
+
 ## Future Updates (În lucru)
 Hardware-ul conține deja cititorul MicroSD. În viitorul apropiat, firmware-ul va primi multiple "moduri" de operare (selecția făcându-se prin apăsarea unei combinații de degete la pornire):
 * **Modul Mouse & Tastatură:** Funcționalitatea actuală extinsă.
