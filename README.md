@@ -33,7 +33,7 @@ Sistemul este gândit pentru eficiență: bateria se conectează la pinii B+ și
 2. Adaugă pachetul pentru plăci ESP32 din *Boards Manager* (Recomandat: folosește versiunea stabilă **2.0.17** pentru a evita conflictele la inițializarea funcțiilor Bluetooth).
 3. Instalează biblioteca [ESP32-BLE-Mouse](https://github.com/T-vK/ESP32-BLE-Mouse) ca arhivă .ZIP.
 4. Selectează placa **ESP32C3 Dev Module**, activează **USB CDC On Boot: Enabled** și **Flash Mode: DIO**.
-5. Încarcă codul `.ino`.
+5. Încarcă codul `manusa_mouse_ble.ino`.
 6. Asociază „Manusa Stanga” din setările Bluetooth ale PC-ului tău. LED-ul albastru de pe placă (pinul 8) se va aprinde și va rămâne aprins când conexiunea este stabilă.
 
 ## Future Updates (În lucru)
