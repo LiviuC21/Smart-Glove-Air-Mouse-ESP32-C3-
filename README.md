@@ -36,6 +36,22 @@ Sistemul este gândit pentru eficiență: bateria se conectează la pinii B+ și
 5. Încarcă codul `manusa_mouse_ble.ino`.
 6. Asociază „Manusa Stanga” din setările Bluetooth ale PC-ului tău. LED-ul albastru de pe placă (pinul 8) se va aprinde și va rămâne aprins când conexiunea este stabilă.
 
+## Troubleshooting: Eroare de compilare BleMouse.cpp
+În funcție de versiunea pachetului ESP32 instalat, este posibil să primești o eroare de compilare legată de funcția `BLEDevice::init` sau `setValue`. Aceasta apare din cauza unei incompatibilități în modul în care sunt citite string-urile de text.
+
+Pentru a repara rapid această eroare:
+1. Mergi în folderul unde Arduino salvează bibliotecile (ex: `C:\Users\[Nume_Utilizator]\Documents\Arduino\libraries\ESP32_BLE_Mouse\`).
+2. Deschide fișierul `BleMouse.cpp` cu Notepad sau orice alt editor de text.
+3. **În jurul liniei 143**, caută linia:
+   `BLEDevice::init(bleMouseInstance->deviceName);`
+   Modific-o adăugând `.c_str()` la final, astfel:
+   `BLEDevice::init(bleMouseInstance->deviceName.c_str());`
+4. **În jurul liniei 151**, caută linia:
+   `bleMouseInstance->hid->manufacturer()->setValue(bleMouseInstance->deviceManufacturer);`
+   Modific-o exact așa:
+   `bleMouseInstance->hid->manufacturer()->setValue((uint8_t*)bleMouseInstance->deviceManufacturer.c_str(), bleMouseInstance->deviceManufacturer.length());`
+5. Salvează fișierul (`Ctrl+S`), închide Notepad și recompilează codul în Arduino IDE. Eroarea va dispărea!
+
 ## Future Updates (În lucru)
 Hardware-ul conține deja cititorul MicroSD. În viitorul apropiat, firmware-ul va primi multiple "moduri" de operare (selecția făcându-se prin apăsarea unei combinații de degete la pornire):
 * **Modul Mouse & Tastatură:** Funcționalitatea actuală extinsă.
