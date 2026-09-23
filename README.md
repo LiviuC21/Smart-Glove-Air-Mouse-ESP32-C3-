@@ -2,6 +2,14 @@
 
 Acest proiect transformă o mănușă obișnuită într-un mouse Bluetooth (Air-Mouse) folosind un microcontroller ESP32-C3 și un giroscop MPU6050. Nu necesită o suprafață plană — controlezi cursorul prin mișcarea încheieturii, direct din aer. Am ales să nu includ un demo video pentru a lăsa bucuria descoperirii celor care vor replica proiectul.
 
+## 📡 Notă importantă despre conexiunea Bluetooth (BLE)
+Spre deosebire de placa ESP32 standard, modelul **ESP32-C3 nu are Bluetooth Clasic**, ci folosește exclusiv **Bluetooth Low Energy (BLE)**. 
+
+* **Avantajul:** Consumul de energie este extrem de mic, ceea ce este perfect pentru un dispozitiv portabil, alimentat de o baterie mică.
+* **Dezavantajul:** Lățimea de bandă și performanța generală sunt mai mici comparativ cu Bluetooth-ul clasic. Cu toate acestea, pentru trimiterea coordonatelor de mouse și a click-urilor, viteza este mai mult decât suficientă și nu veți simți întârzieri (lag).
+
+Acesta este motivul principal pentru care proiectul folosește biblioteca `BleMouse` în loc de o bibliotecă Bluetooth tradițională.
+
 ## Funcționalități
 * **Air-Mouse:** Control fluid al cursorului folosind viteza de rotație a mâinii.
 * **Click Stânga & Dreapta:** Butoane dedicate pe degetul arătător și mijlociu.
@@ -35,7 +43,7 @@ Sistemul este gândit pentru eficiență: bateria se conectează la pinii B+ și
 5. Încarcă codul `manusa_mouse_ble.ino`.
 6. Asociază „Manusa Stanga” din setările Bluetooth ale PC-ului tău. LED-ul albastru de pe placă (pinul 8) se va aprinde și va rămâne aprins când conexiunea este stabilă.
 
-## Troubleshooting: Eroare de compilare BleMouse.cpp
+## Troubleshooting_1: Eroare de compilare BleMouse.cpp
 În funcție de versiunea pachetului ESP32 instalat, este posibil să primești o eroare de compilare legată de funcția `BLEDevice::init` sau `setValue`. Aceasta apare din cauza unei incompatibilități în modul în care sunt citite string-urile de text.
 
 Pentru a repara rapid această eroare:
@@ -50,6 +58,19 @@ Pentru a repara rapid această eroare:
    Modific-o exact așa:
    `bleMouseInstance->hid->manufacturer()->setValue((uint8_t*)bleMouseInstance->deviceManufacturer.c_str(), bleMouseInstance->deviceManufacturer.length());`
 5. Salvează fișierul (`Ctrl+S`), închide Notepad și recompilează codul în Arduino IDE. Eroarea va dispărea!
+
+## Troubleshooting_2: Placa se conectează și deconectează continuu (Bootloop)
+Dacă placa ESP32-C3 Super Mini intră într-o buclă de repornire (apare și dispare rapid din lista de dispozitive USB a PC-ului, iar în consolă primiți erori de tipul `invalid header: 0xffffffff`), înseamnă că memoria flash este goală sau codul anterior a blocat comunicarea.
+
+Pentru a o scoate din bootloop și a putea scrie un cod nou, trebuie să o forțați manual în **Download Mode**:
+1. **Deconectați** complet placa de la cablul USB.
+2. Apăsați și **țineți apăsate simultan** ambele butoane de pe plăcuță: **BOOT** (sau B) și **RESET** (sau RST/EN).
+3. În timp ce țineți ambele butoane apăsate, **conectați cablul USB** la PC.
+4. Așteptați aproximativ 2 secunde după conectare, apoi **eliberați ambele butoane**.
+5. Acum placa va rămâne conectată stabil (verificați portul COM în Arduino IDE).
+
+**⚠️ Setare critică pentru ESP32-C3:**
+Pentru ca placa să nu intre din nou în bootloop după ce codul vostru rulează, mergeți în Arduino IDE la meniul **Tools** și asigurați-vă obligatoriu că opțiunea **USB CDC On Boot** este setată pe **Enabled**. Fără această setare, portul USB nativ al plăcii nu va funcționa pentru debugging sau viitoare scrieri de cod.
 
 ## 🎨 Design & Ergonomie
 Modul în care asamblați mănușa (aspectul fizic, alegerea materialului și așezarea componentelor pe mână) rămâne strict la latitudinea fiecăruia! 
