@@ -1,1 +1,45 @@
-# Smart-Glove-Air-Mouse-ESP32-C3-
+# Smart Glove Air-Mouse (ESP32-C3) 
+
+Acest proiect transformă o mănușă obișnuită într-un mouse Bluetooth (Air-Mouse) folosind un microcontroller ESP32-C3 și un giroscop MPU6050. Nu necesită o suprafață plană — controlezi cursorul prin mișcarea încheieturii, direct din aer. Am ales să nu includ un demo video pentru a lăsa bucuria descoperirii celor care vor replica proiectul.
+
+## Funcționalități
+* **Air-Mouse:** Control fluid al cursorului folosind viteza de rotație a mâinii.
+* **Click Stânga & Dreapta:** Butoane dedicate pe degetul arătător și mijlociu.
+* **Recalibrare anti-Drift (Ambreiaj):** Buton dedicat pe degetul inelar.
+
+### Ce este "Drift-ul" și cum îl rezolvă butonul inelar?
+În lumea senzorilor inerțiali (cum este giroscopul MPU6050), "drift-ul" este un fenomen inerent. Pe măsură ce senzorul funcționează și se încălzește ușor, sau pur și simplu din cauza acumulării unor mici erori matematice în timp, centrul său "zero" se deplasează. Rezultatul vizual este că mouse-ul începe să alunece singur pe ecran într-o direcție, chiar dacă tu ții mâna perfect nemișcată. 
+
+Pentru a combate acest lucru fără a fi nevoie să restartezi complet placa de la zero, butonul de pe degetul inelar acționează ca un sistem de recalibrare on-the-fly. La apăsare, sistemul citește rapid valorile actuale, ignoră vechiul centru de referință și setează un nou punct de repaus,eliminând instant deviația (preferabil când apăsați acel buton de recalibrare ,să țineți mână într-o poziție comodă din care veți dori sa o utilizați deoarece se va alege noul centru ). Este exact echivalentul ridicării unui mouse optic de pe mousepad pentru a-l re-centra atunci când ai rămas fără spațiu pe birou.
+
+## Componente Necesare
+* 1x Placă de dezvoltare ESP32-C3 SuperMini (HW-466AB)
+* 1x Senzor Giroscop/Accelerometru MPU-6050
+* 1x Modul încărcare TP4056 (Type-C)
+* 1x Baterie Li-Po / Li-Ion (marcată BAT)
+* 4x Butoane push (tactile) pentru degete (buton1, buton2, buton3, buton4)
+* 1x Buton ON/OFF cu reținere
+* 1x Modul Micro SD Card Mini TF Card Reader Module SPI (integrat pentru viitoare update-uri)
+* Fire de conexiune și o mănușă confortabilă textilă.
+### Atenție ,dacă doriți să vă faceti o pereche (adică și pe cealaltă mână) ,atunci trebuie sa dublați cantitatea pieselor de mai sus!
+
+## Schema de Conectare
+![Schemă mănușă](schita_manusa.png)
+
+Sistemul este gândit pentru eficiență: bateria se conectează la pinii B+ și B- ai modulului TP4056. Tensiunea pleacă din OUT+ prin butonul de ON/OFF direct în pinul de 5V al ESP-ului, care reglează mai departe curentul optim. Senzorul MPU-6050 și modulul SD Card sunt alimentate la tensiunea corectă din pinul de 3.3V al ESP-ului. Butoanele folosesc logica internă de `INPUT_PULLUP` a plăcii, având un capăt conectat la pinii digitali alocați și celălalt capăt închis la o linie comună spre pinul G (Ground).
+
+## Instalare și Rulare
+1. Instalează **Arduino IDE**.
+2. Adaugă pachetul pentru plăci ESP32 din *Boards Manager* (Recomandat: folosește versiunea stabilă **2.0.17** pentru a evita conflictele la inițializarea funcțiilor Bluetooth).
+3. Instalează biblioteca [ESP32-BLE-Mouse](https://github.com/T-vK/ESP32-BLE-Mouse) ca arhivă .ZIP.
+4. Selectează placa **ESP32C3 Dev Module**, activează **USB CDC On Boot: Enabled** și **Flash Mode: DIO**.
+5. Încarcă codul `.ino`.
+6. Asociază „Manusa Stanga” din setările Bluetooth ale PC-ului tău. LED-ul albastru de pe placă (pinul 8) se va aprinde și va rămâne aprins când conexiunea este stabilă.
+
+## Future Updates (În lucru)
+Hardware-ul conține deja cititorul MicroSD. În viitorul apropiat, firmware-ul va primi multiple "moduri" de operare (selecția făcându-se prin apăsarea unei combinații de degete la pornire):
+* **Modul Mouse & Tastatură:** Funcționalitatea actuală extinsă.
+* **Modul Web Server:** Găzduirea unei pagini locale și streaming de fișiere/muzică găzduite pe cardul SD.
+* **Modul Deauther:** Un modul cu scop educativ pentru testarea și analiza rețelelor WiFi.
+
+## Galerie Foto
