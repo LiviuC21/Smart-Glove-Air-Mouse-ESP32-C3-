@@ -43,3 +43,6 @@ Hardware-ul conține deja cititorul MicroSD. În viitorul apropiat, firmware-ul 
 * **Modul Deauther:** Un modul cu scop educativ pentru testarea și analiza rețelelor WiFi.
 
 ## Galerie Foto
+<img width="455" height="526" alt="schita manusa" src="https://github.com/user-attachments/assets/c5f3fb49-c250-4c35-8a8e-6d68ce91ff49" />
+<img width="1200" height="1600" alt="p2" src="https://github.com/user-attachments/assets/cfcf953c-24a9-44f7-b5d9-2e96a98588e8" />
+<img width="1200" height="1600" alt="p1" src="https://github.com/user-attachments/assets/08919e4f-a507-49ac-9e1a-4278df24be28" />
