@@ -24,9 +24,8 @@ Pentru a combate acest lucru fără a fi nevoie să restartezi complet placa de 
 ### Atenție ,dacă doriți să vă faceti o pereche (adică și pe cealaltă mână) ,atunci trebuie sa dublați cantitatea pieselor de mai sus!
 
 ## Schema de Conectare
-![Schemă mănușă](schita_manusa.png)
 
-Sistemul este gândit pentru eficiență: bateria se conectează la pinii B+ și B- ai modulului TP4056. Tensiunea pleacă din OUT+ prin butonul de ON/OFF direct în pinul de 5V al ESP-ului, care reglează mai departe curentul optim. Senzorul MPU-6050 și modulul SD Card sunt alimentate la tensiunea corectă din pinul de 3.3V al ESP-ului. Butoanele folosesc logica internă de `INPUT_PULLUP` a plăcii, având un capăt conectat la pinii digitali alocați și celălalt capăt închis la o linie comună spre pinul G (Ground).
+Sistemul este gândit pentru eficiență: bateria se conectează la pinii B+ și B- ai modulului TP4056. Tensiunea pleacă din OUT+ prin butonul de ON/OFF direct în pinul de 5V al ESP-ului, care reglează mai departe curentul optim. Senzorul MPU-6050 și modulul SD Card sunt alimentate la tensiunea corectă din pinul de 3.3V al ESP-ului. Butoanele folosesc logica internă de `INPUT_PULLUP` a plăcii, având un capăt conectat la pinii digitali alocați și celălalt capăt închis la o linie comună spre pinul G (Ground). Schema mănuși se află mai jos.
 
 ## Instalare și Rulare
 1. Instalează **Arduino IDE**.
