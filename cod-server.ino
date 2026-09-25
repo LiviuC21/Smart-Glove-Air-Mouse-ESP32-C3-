@@ -97,8 +97,9 @@ void calibreaza() {
 // ======================  MOD 1: MOUSE  ============================
 // ==================================================================
 void setupModMouse() {
+  pinMode(ledPin, OUTPUT); // Aici suntem in siguranta, il setam ca LED
+  
   Wire.begin(pinSDA, pinSCL);
-
   Wire.beginTransmission(MPU_ADDR);
   Wire.write(0x6B);
   Wire.write(0);
@@ -253,14 +254,18 @@ void handlePlay() {
 }
 
 void setupModServerWeb() {
-  digitalWrite(ledPin, HIGH);
-
+  // Aici NU facem pinMode(ledPin, OUTPUT) ca sa nu blocam placa.
+  // Lasam placa sa pregateasca pinul 8 strict pentru SD_MISO.
+  
   SPI.begin(SD_SCK, SD_MISO, SD_MOSI, SD_CS);
 
   if (!SD.begin(SD_CS)) {
-    // Daca SD-ul nu porneste, LED-ul clipeste rapid la nesfarsit ca sa stii ca e problema aici
+    // Doar daca SD-ul da eroare fatala si nu porneste, fortam pinul sa clipeasca
+    pinMode(ledPin, OUTPUT);
     while (true) {
-      digitalWrite(ledPin, !digitalRead(ledPin));
+      digitalWrite(ledPin, LOW);
+      delay(100);
+      digitalWrite(ledPin, HIGH);
       delay(100);
     }
   }
@@ -273,8 +278,8 @@ void setupModServerWeb() {
   server.on("/download", HTTP_GET, handleDownload);
   server.on("/play", HTTP_GET, handlePlay);
   server.begin();
-
-  digitalWrite(ledPin, LOW); // ramane aprins stabil = server pornit, pregatit
+  
+  // Am scos complet aprinderea led-ului de la finalul functiei.
 }
 
 void loopModServerWeb() {
@@ -299,10 +304,13 @@ bool lastButonDegetMic = HIGH;
 unsigned long lastDebounceDegetMic = 0;
 
 void semnalizeazaMod(int mod) {
+  // Fortam pinul sa redevina LED, ignorand cardul SD pentru moment
+  pinMode(ledPin, OUTPUT);
+  
   for (int i = 0; i <= mod; i++) {
-    digitalWrite(ledPin, HIGH);
+    digitalWrite(ledPin, LOW);  // Aprinde LED-ul
     delay(200);
-    digitalWrite(ledPin, LOW);
+    digitalWrite(ledPin, HIGH); // Stinge LED-ul
     delay(200);
   }
   delay(500);
