@@ -317,23 +317,26 @@ void semnalizeazaMod(int mod) {
 }
 
 void verificaSchimbareMod() {
-  bool citire = digitalRead(butonDegetMic);
-
-  if (citire != lastButonDegetMic) {
-    lastDebounceDegetMic = millis();
-  }
-
-  if (millis() - lastDebounceDegetMic > 40) {
-    if (citire == LOW && lastButonDegetMic == HIGH) {
+  // Dacă butonul este apăsat
+  if (digitalRead(butonDegetMic) == LOW) {
+    
+    // Așteptăm 50ms și verificăm din nou (pentru a ignora zgomotul electric/apăsările false)
+    delay(50); 
+    
+    if (digitalRead(butonDegetMic) == LOW) {
+      // Trecem la următorul mod
       modCurent = (modCurent + 1) % NR_MODURI;
+      
+      // Salvăm noul mod în memorie
       prefs.putInt("mod", modCurent);
+      
+      // Semnalizăm din LED
       semnalizeazaMod(modCurent);
-      delay(300);
-      ESP.restart();
+      
+      // Dăm restart plăcii ca să pornească curat în noul mod
+      ESP.restart(); 
     }
   }
-
-  lastButonDegetMic = citire;
 }
 
 // ==================================================================
